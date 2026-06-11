@@ -1,0 +1,8 @@
+# Dependencies for the Streamlit Cloud app (liquidador_oasis/app.py).
+# The Telegram bot uses pyproject.toml; this file is only read by
+# share.streamlit.io when deploying the Liquidador.
+streamlit>=1.36
+pandas>=2.0
+openpyxl>=3.1
+gspread>=6.0
+google-auth>=2.0
