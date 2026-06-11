@@ -35,60 +35,165 @@ QUICK_LOGO_SVG = (
     "</svg>"
 )
 
-# Identidad corporativa Quick: solo #FDD402 / #000000 / #FFFFFF / #F5F5F5, Roboto + Arial
+# Identidad corporativa Quick: solo #FDD402 / #000000 / #FFFFFF / #F5F5F5, Roboto + Arial.
+# Firma visual: cinta de seguridad industrial (chevron negro/amarillo) — vocabulario
+# de bodega/CEDI, el mundo real de la operación logística que liquida esta app.
 BRAND_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+:root {
+  --q-yellow: #FDD402;
+  --q-black: #000000;
+  --q-white: #FFFFFF;
+  --q-gray: #F5F5F5;
+  --q-gray-mid: #E0E0E0;
+  --q-tape: repeating-linear-gradient(-45deg,
+      var(--q-yellow) 0 14px, var(--q-black) 14px 28px);
+}
 
 html, body, .stApp, .stApp * { font-family: 'Roboto', Arial, sans-serif; }
-.stApp { background: #FFFFFF; }
-h1, h2, h3 { color: #000000; font-weight: 700; }
+.stApp { background: var(--q-white); }
+.block-container { padding-top: 1.2rem; max-width: 880px; }
 
+/* Producto, no demo: sin chrome de Streamlit */
+#MainMenu, footer, header[data-testid="stHeader"] { display: none !important; }
+
+h1, h2, h3 { color: var(--q-black); font-weight: 700; }
+
+/* Marcador de sección: eco diagonal del rayo del logo */
+[data-testid="stMarkdownContainer"] h3 {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.08em;
+  margin-top: 0.6rem;
+}
+[data-testid="stMarkdownContainer"] h3::before {
+  content: ""; display: inline-block; width: 14px; height: 22px;
+  background: var(--q-yellow); border: 2px solid var(--q-black);
+  transform: skewX(-18deg); flex: 0 0 auto;
+}
+
+/* ---- Header ---- */
 .quick-header {
-  background: #000000; border-radius: 8px;
-  padding: 18px 26px; margin-bottom: 6px;
-  display: flex; align-items: center; gap: 22px;
+  background: var(--q-black); border-radius: 8px 8px 0 0;
+  padding: 22px 28px;
+  display: flex; align-items: center; gap: 24px;
+  animation: q-fade 0.5s ease-out both;
 }
-.quick-header svg { height: 58px; width: auto; flex: 0 0 auto; }
-.quick-header .qh-title { color: #FFFFFF; font-size: 1.6rem; font-weight: 700; margin: 0; line-height: 1.2; }
-.quick-header .qh-sub { color: #FDD402; font-size: 0.85rem; font-weight: 300; margin: 4px 0 0; }
-
-[data-testid="stMetric"] {
-  background: #F5F5F5; border: 2px solid #000000; border-radius: 8px;
-  padding: 10px 14px;
+.quick-header svg { height: 60px; width: auto; flex: 0 0 auto; }
+.quick-header .qh-title {
+  color: var(--q-white); font-size: 1.7rem; font-weight: 700;
+  margin: 0; line-height: 1.15; letter-spacing: -0.01em;
 }
-[data-testid="stMetricLabel"] { color: #000000; font-weight: 700; }
-[data-testid="stMetricValue"] { color: #000000; }
+.quick-header .qh-sub {
+  color: var(--q-yellow); font-size: 0.8rem; font-weight: 300;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 6px 0 0;
+}
+/* Cinta de seguridad: la firma */
+.quick-tape {
+  height: 10px; background: var(--q-tape);
+  border-radius: 0 0 8px 8px; border: 2px solid var(--q-black); border-top: 0;
+  margin-bottom: 1.4rem;
+}
+.quick-intro {
+  color: var(--q-black); font-weight: 300; font-size: 0.95rem;
+  margin: 0 0 0.4rem;
+}
 
+/* ---- Zona de carga: el momento protagonista ---- */
 [data-testid="stFileUploader"] section {
-  background: #F5F5F5; border: 2px dashed #000000; border-radius: 8px;
+  background: var(--q-gray); border: 2px dashed var(--q-black);
+  border-radius: 8px; padding: 28px 24px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+[data-testid="stFileUploader"] section:hover {
+  border-color: var(--q-black); background: var(--q-white);
+  box-shadow: 4px 4px 0 var(--q-black);
 }
 [data-testid="stFileUploader"] section button {
-  background: #FFFFFF; color: #000000; border: 2px solid #000000; font-weight: 700;
+  background: var(--q-white); color: var(--q-black);
+  border: 2px solid var(--q-black); border-radius: 4px; font-weight: 700;
+}
+[data-testid="stFileUploader"] section button:hover {
+  background: var(--q-yellow); color: var(--q-black); border-color: var(--q-black);
 }
 
+/* ---- Métricas: número grande Light, label microcaps ---- */
+[data-testid="stMetric"] {
+  background: var(--q-white); border: 2px solid var(--q-black);
+  border-left: 8px solid var(--q-yellow); border-radius: 8px;
+  padding: 14px 16px;
+  animation: q-rise 0.45s ease-out both;
+}
+[data-testid="stMetricLabel"] p {
+  color: var(--q-black); font-weight: 700; font-size: 0.68rem !important;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+[data-testid="stMetricValue"] {
+  color: var(--q-black); font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Tabla ---- */
+[data-testid="stDataFrame"] {
+  border: 2px solid var(--q-black); border-radius: 8px;
+  animation: q-rise 0.45s ease-out both;
+}
+
+/* ---- Badges de conciliación ---- */
+.quick-badge-ok, .quick-badge-warn {
+  border-radius: 6px; padding: 14px 18px; font-weight: 700;
+  margin: 10px 0 6px; font-size: 0.95rem;
+  animation: q-rise 0.45s ease-out both;
+}
+.quick-badge-ok   { background: var(--q-yellow); color: var(--q-black); border: 2px solid var(--q-black); }
+.quick-badge-warn { background: var(--q-black); color: var(--q-yellow); border: 2px solid var(--q-yellow); }
+.quick-badge-ok b, .quick-badge-warn b { font-variant-numeric: tabular-nums; }
+
+/* ---- Descarga: acción principal, ancho completo ---- */
+[data-testid="stDownloadButton"] { width: 100%; }
 [data-testid="stDownloadButton"] button {
-  background: #FDD402; color: #000000; border: 2px solid #000000;
-  font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
-  border-radius: 4px;
+  width: 100%; background: var(--q-yellow); color: var(--q-black);
+  border: 2px solid var(--q-black); border-radius: 6px;
+  font-weight: 700; font-size: 1rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.9rem 1.2rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+              background 0.15s ease, color 0.15s ease;
 }
 [data-testid="stDownloadButton"] button:hover {
-  background: #000000; color: #FDD402; border-color: #FDD402;
+  background: var(--q-black); color: var(--q-yellow); border-color: var(--q-black);
+  transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--q-yellow);
+}
+[data-testid="stDownloadButton"] button:focus-visible {
+  outline: 3px solid var(--q-yellow); outline-offset: 2px;
 }
 
+/* ---- Expanders ---- */
 [data-testid="stExpander"] details {
-  border: 2px solid #000000; border-radius: 8px; background: #FFFFFF;
+  border: 2px solid var(--q-black); border-radius: 8px; background: var(--q-white);
 }
-[data-testid="stExpander"] summary { font-weight: 700; color: #000000; }
-
-.quick-badge-ok, .quick-badge-warn {
-  border-radius: 4px; padding: 12px 16px; font-weight: 700;
-  margin: 8px 0 4px;
+[data-testid="stExpander"] summary {
+  font-weight: 700; color: var(--q-black);
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.82rem;
 }
-.quick-badge-ok   { background: #FDD402; color: #000000; border: 2px solid #000000; }
-.quick-badge-warn { background: #000000; color: #FDD402; border: 2px solid #FDD402; }
+[data-testid="stExpander"] summary:hover { color: var(--q-black); background: var(--q-gray); }
 
-[data-testid="stDataFrame"] { border: 2px solid #000000; border-radius: 8px; }
+/* ---- Pie ---- */
+.quick-footer {
+  margin-top: 2.5rem; padding-top: 0.9rem;
+  border-top: 2px solid var(--q-gray-mid);
+  color: var(--q-black); font-weight: 300; font-size: 0.72rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  display: flex; justify-content: space-between;
+}
+
+@keyframes q-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes q-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .stApp * { animation: none !important; transition: none !important; }
+}
 </style>
 """
 
@@ -100,15 +205,14 @@ st.markdown(
   {QUICK_LOGO_SVG}
   <div>
     <p class="qh-title">Liquidador Oasis</p>
-    <p class="qh-sub">GeoVictoria → Oasis · Reglas operativas v6.0 · v{APP_VERSION}</p>
+    <p class="qh-sub">GeoVictoria → Oasis · Reglas v6.0 · v{APP_VERSION}</p>
   </div>
 </div>
+<div class="quick-tape"></div>
+<p class="quick-intro">Sube el reporte de asistencia de GeoVictoria y descarga el
+archivo listo para cargar en Oasis. La conciliación y las alertas se revisan aquí mismo.</p>
 """,
     unsafe_allow_html=True,
-)
-st.caption(
-    "Sube el reporte de asistencia de GeoVictoria y descarga el formato de "
-    "liquidación para Oasis."
 )
 
 archivo = st.file_uploader("Reporte GeoVictoria (.xlsx)", type=["xlsx"])
@@ -260,3 +364,9 @@ if "gcp_service_account" in st.secrets and st.secrets.get("sheet_id"):
                 st.write("Sin ejecuciones registradas todavía.")
         except Exception as exc:
             st.write(f"No se pudo leer el historial: {exc}")
+
+st.markdown(
+    '<div class="quick-footer"><span>Quick · Gestión Humana / Operaciones</span>'
+    "<span>Uso interno · Datos GeoVictoria</span></div>",
+    unsafe_allow_html=True,
+)
