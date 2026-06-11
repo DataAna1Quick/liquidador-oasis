@@ -23,12 +23,92 @@ from procesador_geovictoria_oasis import (
 APP_VERSION = "1.0"
 CONCEPTOS = ["RN", "RDF", "RNF", "HED", "HEN", "HEFD", "HEFN"]
 
-st.set_page_config(page_title="Liquidador Oasis — Quick Help", page_icon="🧾", layout="centered")
+# Logo Quick estándar (SVG oficial del manual de identidad — no modificar)
+QUICK_LOGO_SVG = (
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 250" role="img" aria-label="Quick">'
+    '<circle cx="130" cy="125" r="62.5" fill="none" stroke="#FFFFFF" stroke-width="25"/>'
+    '<circle cx="130" cy="125" r="50" fill="#000000"/>'
+    '<polygon points="82,78 150,145 130,150 210,230 165,185 172,175" fill="#FDD402"/>'
+    '<text x="215" y="190" font-family="Arial Black, Arial, sans-serif" font-weight="900" '
+    'font-size="100" fill="#FFFFFF" stroke="#000000" stroke-width="14" stroke-linejoin="round" '
+    'paint-order="stroke fill" letter-spacing="-3">uick</text>'
+    "</svg>"
+)
 
-st.title("🧾 Liquidador Oasis")
+# Identidad corporativa Quick: solo #FDD402 / #000000 / #FFFFFF / #F5F5F5, Roboto + Arial
+BRAND_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
+html, body, .stApp, .stApp * { font-family: 'Roboto', Arial, sans-serif; }
+.stApp { background: #FFFFFF; }
+h1, h2, h3 { color: #000000; font-weight: 700; }
+
+.quick-header {
+  background: #000000; border-radius: 8px;
+  padding: 18px 26px; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 22px;
+}
+.quick-header svg { height: 58px; width: auto; flex: 0 0 auto; }
+.quick-header .qh-title { color: #FFFFFF; font-size: 1.6rem; font-weight: 700; margin: 0; line-height: 1.2; }
+.quick-header .qh-sub { color: #FDD402; font-size: 0.85rem; font-weight: 300; margin: 4px 0 0; }
+
+[data-testid="stMetric"] {
+  background: #F5F5F5; border: 2px solid #000000; border-radius: 8px;
+  padding: 10px 14px;
+}
+[data-testid="stMetricLabel"] { color: #000000; font-weight: 700; }
+[data-testid="stMetricValue"] { color: #000000; }
+
+[data-testid="stFileUploader"] section {
+  background: #F5F5F5; border: 2px dashed #000000; border-radius: 8px;
+}
+[data-testid="stFileUploader"] section button {
+  background: #FFFFFF; color: #000000; border: 2px solid #000000; font-weight: 700;
+}
+
+[data-testid="stDownloadButton"] button {
+  background: #FDD402; color: #000000; border: 2px solid #000000;
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  border-radius: 4px;
+}
+[data-testid="stDownloadButton"] button:hover {
+  background: #000000; color: #FDD402; border-color: #FDD402;
+}
+
+[data-testid="stExpander"] details {
+  border: 2px solid #000000; border-radius: 8px; background: #FFFFFF;
+}
+[data-testid="stExpander"] summary { font-weight: 700; color: #000000; }
+
+.quick-badge-ok, .quick-badge-warn {
+  border-radius: 4px; padding: 12px 16px; font-weight: 700;
+  margin: 8px 0 4px;
+}
+.quick-badge-ok   { background: #FDD402; color: #000000; border: 2px solid #000000; }
+.quick-badge-warn { background: #000000; color: #FDD402; border: 2px solid #FDD402; }
+
+[data-testid="stDataFrame"] { border: 2px solid #000000; border-radius: 8px; }
+</style>
+"""
+
+st.set_page_config(page_title="Liquidador Oasis | Quick", page_icon="⚡", layout="centered")
+st.markdown(BRAND_CSS, unsafe_allow_html=True)
+st.markdown(
+    f"""
+<div class="quick-header">
+  {QUICK_LOGO_SVG}
+  <div>
+    <p class="qh-title">Liquidador Oasis</p>
+    <p class="qh-sub">GeoVictoria → Oasis · Reglas operativas v6.0 · v{APP_VERSION}</p>
+  </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
 st.caption(
     "Sube el reporte de asistencia de GeoVictoria y descarga el formato de "
-    "liquidación para Oasis. Reglas operativas v6.0."
+    "liquidación para Oasis."
 )
 
 archivo = st.file_uploader("Reporte GeoVictoria (.xlsx)", type=["xlsx"])
@@ -90,14 +170,16 @@ if archivo is not None:
         st.dataframe(tabla, hide_index=True, use_container_width=True)
 
     if concilia_ok:
-        st.success(
-            f"🔍 Conciliación OK — HEA aprobadas: {hea_total:.2f} h · "
-            f"HE en Oasis: {he_oasis:.2f} h · diferencia {diferencia:.4f} h"
+        st.markdown(
+            f'<div class="quick-badge-ok">✅ Conciliación OK — HEA aprobadas: {hea_total:.2f} h · '
+            f"HE en Oasis: {he_oasis:.2f} h · diferencia {diferencia:.4f} h</div>",
+            unsafe_allow_html=True,
         )
     else:
-        st.warning(
-            f"🔍 Revisar conciliación — HEA aprobadas: {hea_total:.2f} h · "
-            f"HE en Oasis: {he_oasis:.2f} h · diferencia {diferencia:.2f} h"
+        st.markdown(
+            f'<div class="quick-badge-warn">⚠️ Revisar conciliación — HEA aprobadas: {hea_total:.2f} h · '
+            f"HE en Oasis: {he_oasis:.2f} h · diferencia {diferencia:.2f} h</div>",
+            unsafe_allow_html=True,
         )
 
     # ----- alertas -----
