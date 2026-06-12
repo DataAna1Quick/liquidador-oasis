@@ -1,4 +1,7 @@
-# Dependencias del Liquidador Oasis (FastAPI + Quick Design System)
+# Liquidador Oasis — dependencias.
+# Streamlit Cloud (app.py) lee este archivo; el Dockerfile de HF Spaces
+# (servidor.py) tambien lo usa — streamlit solo es necesario para el primero.
+streamlit>=1.36
 fastapi>=0.110
 uvicorn>=0.29
 python-multipart>=0.0.9
