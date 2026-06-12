@@ -1,0 +1,6 @@
+/* Quick — Webfonts
+ * Brand typeface: Roboto (weights 100 / 300 / 400 / 700), fallback Arial.
+ * NOTE: loaded from the Google Fonts CDN rather than local binaries.
+ * If you need fully offline / self-hosted fonts, drop the .woff2 files into
+ * assets/fonts/ and replace this @import with local @font-face rules. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');

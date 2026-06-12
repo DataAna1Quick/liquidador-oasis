@@ -1,0 +1,55 @@
+/* Quick — Color tokens
+ * BRAND LAW (corporate manual, non-negotiable): the ONLY colors permitted are
+ * Quick yellow, black, white, and light grey. No greens, reds or blues — not
+ * even for success/error states. Status is communicated with shape, weight,
+ * the yellow accent and black/grey contrast, never with hue. */
+
+:root {
+  /* ---- Brand primitives ---- */
+  --quick-yellow: #FDD402;   /* signature accent — used sparingly, high impact */
+  --quick-black:  #000000;
+  --quick-white:  #FFFFFF;
+  --quick-grey:   #F5F5F5;   /* light grey surface */
+
+  /* ---- Derived neutrals (tints of black on white — NOT new hues) ---- */
+  --ink-900: #000000;        /* primary text, headers */
+  --ink-700: #2B2B2B;        /* strong body text */
+  --ink-500: #5C5C5C;        /* secondary text, labels */
+  --ink-300: #9A9A9A;        /* tertiary text, placeholders */
+  --line-200: #E4E4E4;       /* hairline borders, dividers */
+  --line-100: #EDEDED;       /* subtle borders on grey */
+
+  /* Yellow tints for fills / wash states (kept on-brand) */
+  --yellow-wash: #FFF7CC;    /* pale yellow background wash */
+  --yellow-deep: #C9A800;    /* darkened yellow for press/contrast on white */
+
+  /* ---- Semantic surfaces ---- */
+  --surface-page:    var(--quick-grey);
+  --surface-card:    var(--quick-white);
+  --surface-inverse: var(--quick-black);
+  --surface-accent:  var(--quick-yellow);
+  --surface-wash:    var(--yellow-wash);
+
+  /* ---- Semantic text ---- */
+  --text-strong:   var(--ink-900);
+  --text-body:     var(--ink-700);
+  --text-muted:    var(--ink-500);
+  --text-subtle:   var(--ink-300);
+  --text-on-dark:  var(--quick-white);
+  --text-on-accent:var(--quick-black);
+
+  /* ---- Borders & lines ---- */
+  --border-default: var(--line-200);
+  --border-strong:  var(--ink-900);
+  --border-accent:  var(--quick-yellow);
+
+  /* ---- Status (encoded WITHOUT new hue) ----
+   * OK     = solid black mark on yellow / black text
+   * Revisar= outlined, yellow-washed, heavier weight + alert glyph
+   * There is intentionally no green or red. */
+  --status-ok-bg:      var(--quick-black);
+  --status-ok-fg:      var(--quick-white);
+  --status-review-bg:  var(--yellow-wash);
+  --status-review-fg:  var(--quick-black);
+  --status-review-line:var(--quick-yellow);
+}

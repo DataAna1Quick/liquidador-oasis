@@ -1,0 +1,44 @@
+/* Quick — base element defaults.
+ * Applies the brand's typographic and surface defaults to bare HTML so any
+ * consuming page inherits the industrial baseline. Tokens come from the
+ * imported token files. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { color: var(--text-strong); line-height: var(--lh-tight); margin: 0; }
+h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); }
+h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); }
+h3 { font-size: var(--fs-h3); font-weight: var(--fw-bold); }
+
+/* Overline / label utility class */
+.q-overline {
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Tabular numerals for any data/figures */
+.q-tnum { font-variant-numeric: tabular-nums; }
+
+/* The signature safety-tape rule — drop in as a divider or accent strip. */
+.q-tape {
+  height: var(--tape-height);
+  background: var(--tape);
+  background-size: 33.94px 33.94px; /* keeps the 45° stripe seamless */
+}
+
+::selection { background: var(--quick-yellow); color: var(--quick-black); }
