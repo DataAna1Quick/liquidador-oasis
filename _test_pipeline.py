@@ -47,6 +47,9 @@ filas = [
     # Escenario 4: sin extras, con recargo nocturno
     fila_base(Apellidos="RIOS", Nombres="EVA", Identificador="444",
               Fecha="Mie 03-06-2026", Turno="19:00 - 06:00", RNO_Dec="2,0"),
+    # Escenario 5: turno sábado noche que cruza a domingo (2h nocturna ordinaria + 2.6h dominical nocturna)
+    fila_base(Apellidos="MORA", Nombres="SARA", Identificador="666",
+              Fecha="Sáb 06-06-2026", Turno="22:00 - 06:00", RNO_Dec="2,0", RND_Dec="2,6"),
     # Sin pago: no debe aparecer
     fila_base(Apellidos="SOTO", Nombres="MAX", Identificador="555",
               Fecha="Jue 04-06-2026"),
@@ -67,14 +70,14 @@ odf = construir_filas_oasis(df)
 periodo = detectar_periodo(df)
 
 print(f"Periodo: {periodo[0]} -> {periodo[1]}")
-print(f"Filas Oasis: {len(odf)} (esperadas 3: esc.1, esc.2, esc.4)")
+print(f"Filas Oasis: {len(odf)} (esperadas 4: esc.1, esc.2, esc.4, esc.5)")
 for _, r in odf.iterrows():
     pagos = {k: r[k] for k in ["RN", "RDF", "RNF", "HED", "HEN", "HEFD", "HEFN"] if pd.notna(r[k])}
     print(f"  {r['COLABORADOR']:12s} {r['FECHA']}  {pagos}  ciudad={r['CIUDAD']} cco={r['CODIGO CENTRO DE COSTO']}")
 
 # Validaciones (Identificador puede venir como int por inferencia de pandas)
 ids = odf["IDENTIFICACION"].astype(str)
-assert len(odf) == 3, f"esperaba 3 filas, hay {len(odf)}"
+assert len(odf) == 4, f"esperaba 4 filas, hay {len(odf)}"
 r1 = odf[ids == "111"].iloc[0]
 assert abs(r1["HED"] - 1.5) < 0.01 and abs(r1["HEN"] - 0.5) < 0.01, "esc.1 distribución proporcional"
 r2 = odf[ids == "222"].iloc[0]
@@ -82,6 +85,8 @@ assert abs(r2["HEFN"] - 1.5) < 0.01, "esc.2 festivo nocturno (29-06 San Pedro) -
 r4 = odf[ids == "444"].iloc[0]
 assert abs(r4["RN"] - 2.0) < 0.01, "esc.4 recargo nocturno -> RN"
 assert "333" not in set(ids), "esc.3 NO debe pagarse"
+r5 = odf[ids == "666"].iloc[0]
+assert abs(r5["RN"] - 2.0) < 0.01 and abs(r5["RNF"] - 2.6) < 0.01, "esc.5 dominical nocturno -> RNF, ordinario -> RN"
 
 out = io.BytesIO()
 escribir_excel(odf, out)
