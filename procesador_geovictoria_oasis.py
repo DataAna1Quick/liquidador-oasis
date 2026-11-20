@@ -14,8 +14,10 @@
 
  REGLAS APLICADAS:
    1. HEA (aprobadas) reemplaza a HEC: "lo aprobado es ley"
-   2. Dominical NO se paga (cubierto por contrato dom-a-dom con compensatorio)
-      EXCEPTO el componente nocturno (35%) que sí se paga aparte (RN)
+   2. Dominical DIURNO no se paga (cubierto por contrato dom-a-dom con
+      compensatorio). Dominical NOCTURNO sin compensatorio (RND) se paga a
+      tarifa nocturna dominical/festiva (RNF 125%). El nocturno dominical
+      compensado (RDNC) solo paga el componente nocturno (RN 35%).
    3. Festivo SÍ se paga completo (RDF 75%, RNF 125%)
    4. HE en dominical → HED/HEN ordinaria
    5. HE en festivo → HEFD/HEFN completa con plus festivo
@@ -192,9 +194,10 @@ def mapear_pago(r):
     Mapea una fila de Geovictoria a los conceptos de Oasis.
     
     Recargos:
-    - RN  ← RNO + RND + RDNC (incluye componente nocturno de dominicales)
+    - RN  ← RNO + RDNC (nocturno ordinario + componente nocturno del
+            dominical compensado)
     - RDF ← RDF + RDFC (solo festivos diurnos; RDD/RDDC NO se pagan)
-    - RNF ← RNF + RNFC (solo festivos nocturnos)
+    - RNF ← RNF + RNFC + RND (festivos nocturnos + dominical nocturno)
     
     Horas Extras (basadas en HEA aprobadas):
     - HED  ← HEDO + HEDD (ordinaria + dominical como ordinaria)
@@ -221,9 +224,9 @@ def mapear_pago(r):
             _asignar_por_turno(pago, hea, r)
 
     return {
-        'RN':   r['RNO_Dec'] + r['RND_Dec'] + r['RDNC_Dec'],
+        'RN':   r['RNO_Dec'] + r['RDNC_Dec'],
         'RDF':  r['RDF_Dec'] + r['RDFC_Dec'],
-        'RNF':  r['RNF_Dec'] + r['RNFC_Dec'],
+        'RNF':  r['RNF_Dec'] + r['RNFC_Dec'] + r['RND_Dec'],
         'HED':  pago['HED'],
         'HEN':  pago['HEN'],
         'HEFD': pago['HEFD'],
